@@ -9,12 +9,18 @@ Frontend-only site that recommends the best, most popular and coolest beach for 
 
 ## Run locally
 
-No build step. From this folder:
+Needs Node 18+. From this folder:
 
 ```bash
+npm install
+npm run build
 python3 -m http.server 8000
 ```
 
 Then open http://localhost:8000.
 
-Beach data lives in `beaches.js` — add entries there to expand coverage.
+## Layout
+
+- `packages/ui` — `@beach-finder/ui`, the component library (tokens + React components). Synced to Claude Design via `/design-sync`.
+- `src/main.jsx` — the app, built from those components. `src/beaches.js` holds the beach data; add entries there to expand coverage.
+- `styles.css` — app-level layout only.

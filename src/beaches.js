@@ -1,5 +1,5 @@
 // Curated beach list. popularity: 1-100 (how well-known / visited), cool: 1-10 (vibe score).
-const BEACHES = [
+export const BEACHES = [
   // United States — West Coast
   { name: "Venice Beach", region: "Los Angeles, CA, USA", lat: 33.985, lng: -118.4695, popularity: 92, cool: 9, vibes: ["party", "people-watching", "skate"], blurb: "Boardwalk chaos, Muscle Beach, street performers and a skate park." },
   { name: "Santa Monica Beach", region: "Santa Monica, CA, USA", lat: 34.0094, lng: -118.4973, popularity: 95, cool: 8, vibes: ["family", "people-watching"], blurb: "Iconic pier, Ferris wheel and wide sand for a classic LA day." },

@@ -1,0 +1,32 @@
+{
+  "projectId": "8c364bf3-c1e2-4589-abc5-9faa20d29daf",
+  "shape": "package",
+  "pkg": "@beach-finder/ui",
+  "globalName": "BeachFinderUI",
+  "buildCmd": "npm run build:ui",
+  "cssEntry": "dist/styles.css",
+  "provider": {
+    "component": "BeachRoot",
+    "props": {
+      "style": {
+        "padding": "16px"
+      }
+    }
+  },
+  "componentSrcMap": {
+    "BeachRoot": null,
+    "BeachCardBody": null
+  },
+  "dtsPropsFor": {
+    "Button": "  /** `primary` is the solid sea-blue call to action; `secondary` is the outlined alternative. */\n  variant?: \"primary\" | \"secondary\";\n  /** Defaults to \"button\". */\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;\n  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;\n  children?: React.ReactNode;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;",
+    "TextInput": "  value?: string;\n  defaultValue?: string;\n  placeholder?: string;\n  /** Defaults to \"text\". */\n  type?: string;\n  name?: string;\n  disabled?: boolean;\n  autoComplete?: string;\n  \"aria-label\"?: string;\n  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;",
+    "SelectField": "  /** Visible label rendered before the select, e.g. \"Within\" or \"Sort by\". */\n  label: string;\n  options: { value: string; label: string }[];\n  value?: string;\n  defaultValue?: string;\n  name?: string;\n  disabled?: boolean;\n  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;",
+    "Card": "  /** Element to render as. Use `li` inside lists. */\n  as?: \"div\" | \"li\" | \"article\" | \"section\";\n  /** Adds pointer cursor and a hover lift; set when the whole card is clickable. */\n  interactive?: boolean;\n  onClick?: (e: React.MouseEvent<HTMLElement>) => void;\n  children?: React.ReactNode;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;",
+    "BeachCard": "  beach: { name: string; region: string; /** km from the searched origin */ distance: number; blurb: string; /** blended 0-100 match score */ score: number; /** 1-100 how well-known */ popularity: number; /** 1-10 vibe score */ cool: number; vibes: string[] };\n  /** Google Maps (or other) directions link; omit to hide the \"Directions \u2192\" link. */\n  directionsHref?: string;\n  as?: \"div\" | \"li\" | \"article\";\n  /** Makes the card interactive (pointer + hover lift). */\n  onClick?: (e: React.MouseEvent<HTMLElement>) => void;",
+    "PickBanner": "  beach: { name: string; region: string; /** km from the searched origin */ distance: number; blurb: string; /** blended 0-100 match score */ score: number; /** 1-100 how well-known */ popularity: number; /** 1-10 vibe score */ cool: number; vibes: string[] };\n  /** Sun-coloured eyebrow label. Default \"Today's pick\". */\n  label?: string;\n  directionsHref?: string;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;"
+  },
+  "guidelinesGlob": [
+    "guides/**/*.md"
+  ],
+  "readmeHeader": ".design-sync/conventions.md"
+}
