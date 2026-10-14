@@ -7,6 +7,8 @@
 - `BeachRoot` is the provider (`cfg.provider`) and excluded as a component; `BeachCardBody` is an internal building block, excluded via `componentSrcMap`.
 - Auto `.d.ts` extraction drops inherited DOM props (onClick, disabled, value, onChange, placeholder…) and leaves `Beach`/`SelectOption` as unresolved names, so Button, TextInput, SelectField, Card, BeachCard, PickBanner use hand-written `dtsPropsFor`.
 - Groups come from `category` frontmatter in `packages/ui/docs/<Name>.md` (auto-detected docsDir). `guidelinesGlob` is pointed at a non-existent `guides/` on purpose: the default `docs/*.md` would duplicate the component docs into `guidelines/` (the build logs a harmless `! guidelinesGlob: guides not found`).
+- DesignSync auth: `/design-login` isn't available in the desktop app's Code tab. Run it once from the `claude` CLI in a terminal (installed via the local Node: `npm i -g @anthropic-ai/claude-code`); the desktop session then reuses it.
+- Project: "Beach Finder UI" — https://claude.ai/design/p/8c364bf3-c1e2-4589-abc5-9faa20d29daf (pinned in config.json). First upload 2026-10-14: 51 files + anchor, no deletes.
 
 ## Known render warns
 - none
