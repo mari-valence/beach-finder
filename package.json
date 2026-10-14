@@ -1,11 +1,14 @@
 {
   "name": "beach-finder",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build:ui": "npm run build -w @beach-finder/ui",
     "build:app": "esbuild src/main.jsx --bundle --minify --jsx=automatic --outfile=dist/app.js && cp packages/ui/dist/styles.css dist/ui.css",
-    "build": "npm run build:ui && npm run build:app"
+    "build:site": "rm -rf public && mkdir -p public/dist && cp index.html styles.css public/ && cp dist/app.js dist/ui.css public/dist/",
+    "build": "npm run build:ui && npm run build:app && npm run build:site"
   },
   "dependencies": {
     "@beach-finder/ui": "0.1.0",

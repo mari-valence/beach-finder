@@ -19,6 +19,10 @@ python3 -m http.server 8000
 
 Then open http://localhost:8000.
 
+## Deploy
+
+`npm run build` also assembles the static site into `public/` (`index.html`, `styles.css`, `dist/app.js`, `dist/ui.css`). Vercel is configured in `vercel.json` to run that build and serve `public/`.
+
 ## Layout
 
 - `packages/ui` — `@beach-finder/ui`, the component library (tokens + React components). Synced to Claude Design via `/design-sync`.

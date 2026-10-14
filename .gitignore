@@ -2,6 +2,7 @@
 .claude/
 node_modules/
 dist/
+public/
 .ds-sync/
 ds-bundle/
 .design-sync/.cache/
