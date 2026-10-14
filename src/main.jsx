@@ -68,17 +68,31 @@ function rank(origin, radius, vibe, sort) {
   return { list: list.sort(sorters[sort]), fallback };
 }
 
+const NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"];
+const countWord = (n) => NUMBER_WORDS[n] ?? n.toLocaleString();
+
+function todayLine() {
+  const d = new Date();
+  const weekday = d.toLocaleDateString("en-GB", { weekday: "long" });
+  return `${weekday}, ${d.toLocaleDateString("en-GB", { day: "numeric", month: "long" })}`;
+}
+
 // --- Map (Leaflet, loaded globally from the CDN) ---
+const INK = "#1d1b18";
+const ROSEWOOD = "#8a4a3c";
+
 function useBeachMap(origin, list) {
   const el = useRef(null);
   const map = useRef(null);
   const markers = useRef(null);
+  const byName = useRef(new Map());
 
   useEffect(() => {
-    map.current = L.map(el.current).setView([25, -40], 2);
+    map.current = L.map(el.current, { scrollWheelZoom: false }).setView([25, -40], 2);
+    // OSM tiles, desaturated to warm monochrome in styles.css (.map .leaflet-tile-pane).
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 18,
-      attribution: "© OpenStreetMap contributors",
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map.current);
     markers.current = L.layerGroup().addTo(map.current);
     return () => map.current.remove();
@@ -87,20 +101,31 @@ function useBeachMap(origin, list) {
   useEffect(() => {
     if (!origin) return;
     markers.current.clearLayers();
+    byName.current.clear();
     markers.current.addLayer(
       L.circleMarker([origin.lat, origin.lng], {
-        radius: 8, color: "#f59e0b", fillColor: "#f59e0b", fillOpacity: 0.9,
+        radius: 7, color: ROSEWOOD, weight: 2, fillColor: ROSEWOOD, fillOpacity: 1,
       }).bindPopup("You are here"),
     );
     const points = [[origin.lat, origin.lng]];
     list.forEach((b, i) => {
-      markers.current.addLayer(L.marker([b.lat, b.lng]).bindPopup(`<b>${i + 1}. ${b.name}</b><br>${formatKm(b.distance)} · ⭐ ${b.score}`));
+      const m = L.circleMarker([b.lat, b.lng], {
+        radius: 6, color: INK, weight: 1.5, fillColor: "#fbf9f5", fillOpacity: 1,
+      }).bindPopup(`<strong>${String(i + 1).padStart(2, "0")} · ${b.name}</strong><br>${formatKm(b.distance)} · Score ${b.score}`);
+      markers.current.addLayer(m);
+      byName.current.set(b.name, m);
       points.push([b.lat, b.lng]);
     });
-    map.current.fitBounds(points, { padding: [40, 40], maxZoom: 11 });
+    map.current.fitBounds(points, { padding: [48, 48], maxZoom: 11 });
   }, [origin, list]);
 
-  return { el, focus: (b) => map.current.setView([b.lat, b.lng], 12) };
+  function focus(b) {
+    el.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    map.current.setView([b.lat, b.lng], 12);
+    byName.current.get(b.name)?.openPopup();
+  }
+
+  return { el, focus };
 }
 
 function App() {
@@ -146,65 +171,130 @@ function App() {
     if (!navigator.geolocation) return setStatus("Your browser doesn't support location.");
     setStatus("Getting your location…");
     navigator.geolocation.getCurrentPosition(
-      (pos) => setPlace(pos.coords.latitude, pos.coords.longitude, "your location"),
+      (pos) => {
+        setQuery("");
+        setPlace(pos.coords.latitude, pos.coords.longitude, "your location");
+      },
       () => setStatus("Couldn't get your location. Type a city instead."),
     );
   }
 
+  function resetFilters() {
+    setRadius("150");
+    setVibe("");
+    setSort("best");
+  }
+
   const top = list[0];
+  const rest = list.slice(1);
+  const radiusLabel = RADIUS_OPTIONS.find((o) => o.value === radius)?.label;
 
   return (
     <BeachRoot>
-      <Hero title="🏖️ Beach Finder" tagline="Tell us where you are. We'll find the best, most popular, coolest beach for a day out.">
-        <form className="search" onSubmit={onSearch}>
+      <Hero
+        eyebrow={origin ? `${todayLine()} · Near ${originLabel}` : todayLine()}
+        title="Find the beach that suits the day."
+        nav={<><a href="#results">Beaches</a><a href="#map">Map</a></>}
+      >
+        <form className="search-bar" onSubmit={onSearch}>
           <TextInput
+            label="Starting from"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="City or address, e.g. Los Angeles"
-            aria-label="City or address"
+            placeholder="City or address"
             autoComplete="off"
           />
-          <Button type="submit">Find beaches</Button>
-          <Button variant="secondary" onClick={onGeo}>📍 Use my location</Button>
-        </form>
-        <div className="filters">
           <SelectField label="Within" options={RADIUS_OPTIONS} value={radius} onChange={(e) => setRadius(e.target.value)} />
           <SelectField label="Vibe" options={VIBE_OPTIONS} value={vibe} onChange={(e) => setVibe(e.target.value)} />
-          <SelectField label="Sort by" options={SORT_OPTIONS} value={sort} onChange={(e) => setSort(e.target.value)} />
-        </div>
-        <p className="status" role="status">{status}</p>
+          <Button type="submit">Search</Button>
+        </form>
       </Hero>
 
-      <main className="layout">
+      <main className="page">
+        <div className="status-row">
+          <p className="status" role="status">{status}</p>
+          {origin && <Button variant="text" onClick={onGeo}>Use my location</Button>}
+        </div>
+
+        {!origin && (
+          <section className="section">
+            <EmptyState
+              title="Start with a place."
+              action={<Button variant="text" onClick={onGeo}>Use my location</Button>}
+            >
+              Type a town or address above and we'll rank the beaches within reach by crowds, character and distance.
+            </EmptyState>
+          </section>
+        )}
+
+        {origin && list.length === 0 && (
+          <section className="section">
+            <EmptyState title="No beaches match." action={<Button variant="text" onClick={resetFilters}>Reset filters</Button>}>
+              Try widening the distance or choosing a different vibe.
+            </EmptyState>
+          </section>
+        )}
+
         {top && (
           <PickBanner
-            className="pick"
+            className="section"
+            layout="feature"
             beach={top}
             label={fallback ? "Closest great beach" : "Today's pick"}
             directionsHref={directionsUrl(top, origin)}
+            onViewMap={() => focus(top)}
           />
         )}
-        <div className="columns">
-          <ol className="results">
+
+        {origin && list.length > 0 && (
+          <section className="section results" id="results">
             {fallback && (
-              <EmptyState as="li">No beaches in our list within that distance. Here are the closest ones instead.</EmptyState>
+              <EmptyState
+                className="fallback"
+                title={`Nothing within ${radiusLabel}.`}
+                action={<Button variant="text" onClick={() => setRadius("Infinity")}>Search anywhere</Button>}
+              >
+                These are the closest beaches that match instead.
+              </EmptyState>
             )}
-            {list.map((b) => (
-              <BeachCard
-                key={b.name}
-                as="li"
-                beach={b}
-                directionsHref={directionsUrl(b, origin)}
-                onClick={(e) => { if (!e.target.closest("a")) focus(b); }}
-              />
-            ))}
-          </ol>
+            <div className="results__head">
+              <div>
+                <div className="bf-eyebrow results__eyebrow">{fallback ? "Next closest" : "Also within reach"}</div>
+                <h2 className="results__title">
+                  {rest.length ? `${countWord(rest.length)} more beach${rest.length === 1 ? "" : "es"}` : "Nothing else nearby"}
+                </h2>
+              </div>
+              <div className="results__filters">
+                <SelectField variant="inline" label="Sort" options={SORT_OPTIONS} value={sort} onChange={(e) => setSort(e.target.value)} />
+                <SelectField variant="inline" label="Vibe" options={VIBE_OPTIONS} value={vibe} onChange={(e) => setVibe(e.target.value)} />
+                <SelectField variant="inline" label="Within" options={RADIUS_OPTIONS} value={radius} onChange={(e) => setRadius(e.target.value)} />
+              </div>
+            </div>
+            <ol className="results__grid">
+              {rest.map((b, i) => (
+                <BeachCard
+                  key={b.name}
+                  as="li"
+                  rank={i + 2}
+                  beach={b}
+                  onClick={(e) => { if (!e.target.closest("a")) focus(b); }}
+                />
+              ))}
+            </ol>
+          </section>
+        )}
+
+        <section className="section map-section" id="map">
           <div ref={mapEl} className="map" />
-        </div>
+        </section>
       </main>
 
       <footer className="footer">
-        Geocoding by <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap Nominatim</a>. Map © OpenStreetMap contributors.
+        <span className="footer__logo">Beach Finder</span>
+        <span>
+          Scores blend popularity, character and distance. Geocoding by{" "}
+          <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap Nominatim</a>.
+        </span>
       </footer>
     </BeachRoot>
   );

@@ -1,19 +1,23 @@
 import { Hero, TextInput, Button, SelectField } from "@beach-finder/ui";
 
+const nav = <><a href="#">Beaches</a><a href="#">Map</a></>;
+
 export const TitleOnly = () => (
-  <Hero title="🏖️ Beach Finder" tagline="Tell us where you are. We'll find the best, most popular, coolest beach for a day out." />
+  <Hero eyebrow="Tuesday, 14 October · 17°C · Light westerly" title="Find the beach that suits the day." nav={nav} />
 );
 
 export const WithSearch = () => (
-  <Hero title="🏖️ Beach Finder" tagline="Tell us where you are. We'll find the best, most popular, coolest beach for a day out.">
-    <form style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", maxWidth: 720, margin: "0 auto" }} onSubmit={(e) => e.preventDefault()}>
-      <TextInput style={{ flex: "1 1 260px" }} placeholder="City or address, e.g. Los Angeles" aria-label="City or address" />
-      <Button type="submit">Find beaches</Button>
-      <Button variant="secondary">📍 Use my location</Button>
-    </form>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center", marginTop: 16 }}>
-      <SelectField label="Within" defaultValue="150" options={[{ value: "50", label: "50 km" }, { value: "150", label: "150 km" }, { value: "500", label: "500 km" }]} />
-      <SelectField label="Sort by" options={[{ value: "best", label: "Best match" }, { value: "distance", label: "Closest" }]} />
-    </div>
-  </Hero>
+  <div style={{ paddingBottom: 60 }}>
+    <Hero eyebrow="Tuesday, 14 October" title="Find the beach that suits the day." nav={nav}>
+      <form
+        style={{ display: "grid", gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) auto", gap: 28, alignItems: "end", padding: "20px 0 20px 28px", background: "var(--bf-paper)", borderRadius: 2, boxShadow: "var(--bf-shadow)" }}
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <TextInput label="Starting from" defaultValue="Truro, Cornwall" />
+        <SelectField label="Within" defaultValue="150" options={[{ value: "50", label: "50 km" }, { value: "150", label: "150 km" }, { value: "500", label: "500 km" }]} />
+        <SelectField label="Vibe" options={[{ value: "", label: "Any" }, { value: "surf", label: "Surf" }]} />
+        <Button type="submit" style={{ alignSelf: "stretch", margin: "-20px 0" }}>Search</Button>
+      </form>
+    </Hero>
+  </div>
 );

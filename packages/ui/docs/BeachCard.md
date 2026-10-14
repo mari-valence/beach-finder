@@ -3,10 +3,12 @@ category: Beaches
 ---
 # BeachCard
 
-One beach search result: name, "region · N km away", blurb, then a meta row (⭐ score, 🔥 popularity, 😎 cool/10, vibe `Pill`s, and a right-aligned "Directions →" link when `directionsHref` is set). Stack results in a list with a 12px gap; pass `onClick` to make the card interactive (e.g. focus a map).
+One beach result in the editorial grid: a 4:5 photo (`beach.image`, or a warm tonal placeholder) with the two-digit `rank` bottom-right, then the name in Cormorant 32px with the score in rosewood, "Region · N km" in stone, the blurb, and an uppercase vibe line ("Surf · Chill"). No border or surface: lay cards out in a 3-column grid (40px column gap, 72px row gap). Pass `onClick` to make the whole card clickable (e.g. focus its map pin); `directionsHref` adds a small "Directions" text link.
 
 ```jsx
-<BeachCard as="li" directionsHref="https://www.google.com/maps/dir/?api=1&destination=34.0353,-118.6776"
-  beach={{ name: "Malibu Surfrider Beach", region: "Malibu, CA, USA", distance: 41, score: 84,
-           popularity: 80, cool: 9, vibes: ["surf", "chill"], blurb: "Legendary point break with mellow, long rides." }} />
+<ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "72px 40px" }}>
+  <BeachCard as="li" rank={2} onClick={focusPin}
+    beach={{ name: "Porthcurno", region: "West Penwith", distance: 58, score: 88, popularity: 74, cool: 6,
+             chairRental: true, vibes: ["swimming", "chill"], blurb: "Fine shell sand below the cliffs, sheltered from the westerly wind." }} />
+</ol>
 ```

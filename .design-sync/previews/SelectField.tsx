@@ -18,12 +18,23 @@ const sort = [
   { value: "popularity", label: "Most popular" },
 ];
 
-export const Default = () => <SelectField label="Within" options={radius} defaultValue="150" />;
+export const Default = () => (
+  <div style={{ width: 280 }}>
+    <SelectField label="Within" options={radius} defaultValue="150" />
+  </div>
+);
 
-export const FilterRow = () => (
-  <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+export const FormRow = () => (
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 32, maxWidth: 640 }}>
     <SelectField label="Within" options={radius} defaultValue="150" />
     <SelectField label="Vibe" options={vibes} defaultValue="surf" />
-    <SelectField label="Sort by" options={sort} defaultValue="best" />
+  </div>
+);
+
+export const InlineFilters = () => (
+  <div style={{ display: "flex", flexWrap: "wrap", gap: 40 }}>
+    <SelectField variant="inline" label="Sort" options={sort} defaultValue="best" />
+    <SelectField variant="inline" label="Vibe" options={vibes} defaultValue="" />
+    <SelectField variant="inline" label="Within" options={radius} defaultValue="150" />
   </div>
 );

@@ -1,7 +1,7 @@
 {
   "name": "@beach-finder/ui",
   "version": "0.1.0",
-  "description": "Beach Finder's component library: sandy, sea-blue, sun-accented UI pieces.",
+  "description": "Beach Finder's component library: warm, editorial UI pieces in ivory, ink and rosewood.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

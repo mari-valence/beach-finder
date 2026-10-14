@@ -3,8 +3,8 @@ category: Forms
 ---
 # TextInput
 
-Single-line text field with the system's 10px radius and hairline border. There is no built-in label: pass `aria-label` (or wrap in your own `<label>`). In a search row, let it grow with `style={{ flex: "1 1 260px" }}` next to its `Button`s.
+Single-line field: 17px value, 10px vertical padding, bottom rule only (`--bf-hairline`, ink on focus). Pass `label` for the 11px uppercase stone label above it; without one, pass `aria-label`. Matches `SelectField` so they line up in a form grid.
 
 ```jsx
-<TextInput placeholder="City or address, e.g. Los Angeles" aria-label="City or address" value={q} onChange={(e) => setQ(e.target.value)} />
+<TextInput label="Starting from" placeholder="City or address" value={q} onChange={(e) => setQ(e.target.value)} />
 ```

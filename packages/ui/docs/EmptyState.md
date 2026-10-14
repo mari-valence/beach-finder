@@ -3,8 +3,10 @@ category: Display
 ---
 # EmptyState
 
-Centred muted-grey message with 24px padding, for empty or fallback results. Use `as="li"` inside a results list.
+Centred message in a hairline-bordered box (72×32px padding): a Cormorant 300 36px `title`, stone body copy (`children`, max-width 360px) and an optional `action`, usually a text `Button`. Use for no results, fallback results and the pre-search state.
 
 ```jsx
-<EmptyState>No beaches in our list within that distance. Here are the closest ones instead.</EmptyState>
+<EmptyState title="No beaches match." action={<Button variant="text" onClick={reset}>Reset filters</Button>}>
+  Try widening the distance or choosing a different vibe.
+</EmptyState>
 ```

@@ -3,11 +3,11 @@ category: Surfaces
 ---
 # Card
 
-White surface, 12px radius, hairline border, 14×16px padding — the base container for list rows and panels. Set `interactive` when the whole card is clickable (adds a pointer cursor and a 1px hover lift). Use `as="li"` inside `<ol>`/`<ul>`.
+Paper (`--bf-paper`) surface with a 1px `--bf-hairline-soft` border, 2px radius and 32px padding, no shadow. For panels and grouped content. Set `interactive` when the whole card is clickable (pointer cursor, border darkens to ink on hover). Use `as="li"` inside lists.
 
 ```jsx
 <Card interactive onClick={open}>
-  <h3 style={{ margin: 0 }}>Saved search</h3>
-  <p>Surf beaches within 150 km of San Diego</p>
+  <div className="bf-label" style={{ marginBottom: 12 }}>Saved search</div>
+  <p style={{ margin: 0 }}>Surf beaches within 150 km of Truro</p>
 </Card>
 ```

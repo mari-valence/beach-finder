@@ -1,30 +1,70 @@
 /* App-level layout only. Tokens and component styles come from @beach-finder/ui (dist/ui.css). */
-body { margin: 0; background: var(--bf-sand); }
+body { margin: 0; background: var(--bf-ivory); }
+html { scroll-behavior: smooth; }
 
-.search {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  justify-content: center; max-width: 720px; margin: 0 auto;
+/* Search bar overlapping the bottom of the hero */
+.search-bar {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  background: var(--bf-paper); border-radius: var(--bf-radius); box-shadow: var(--bf-shadow);
 }
-.search .bf-input { flex: 1 1 260px; }
-
-.filters {
-  display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 16px;
+.search-bar .bf-field { gap: 4px; padding: 20px 28px; border-right: 1px solid var(--bf-hairline-soft); }
+.search-bar .bf-field:nth-of-type(3) { border-right: 0; }
+.search-bar .bf-input,
+.search-bar .bf-field select { padding: 0; border: 0; }
+.search-bar .bf-field:focus-within { background: var(--bf-ivory); }
+.search-bar .bf-button { padding: 0 56px; border-radius: 0 var(--bf-radius) var(--bf-radius) 0; }
+@media (max-width: 760px) {
+  .search-bar { grid-template-columns: 1fr; }
+  .search-bar .bf-field { padding: 16px 20px; border-right: 0; border-bottom: 1px solid var(--bf-hairline-soft); }
+  .search-bar .bf-button { padding: 20px; border-radius: 0 0 var(--bf-radius) var(--bf-radius); }
 }
-.status { min-height: 1.2em; margin: 12px 0 0; font-size: 0.9rem; }
 
-.layout { max-width: 1200px; margin: 0 auto; padding: 16px; }
-.pick { margin-bottom: 20px; }
-
-.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-@media (max-width: 800px) { .columns { grid-template-columns: 1fr; } }
-
-.results { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-
-.map {
-  height: 600px; border-radius: var(--bf-radius-lg); border: 1px solid var(--bf-border);
-  position: sticky; top: 16px;
+/* Page sections */
+.page { padding-top: 88px; }
+.status-row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+  padding: 0 64px; min-height: 24px;
 }
-@media (max-width: 800px) { .map { height: 360px; position: static; order: -1; } }
+.status { margin: 0; font-size: 13px; color: var(--bf-stone); }
+.section { padding: 72px 64px 120px; }
+.section + .section { padding-top: 0; }
 
-.footer { text-align: center; color: var(--bf-muted); font-size: 0.8rem; padding: 24px 16px; }
-.footer a { color: var(--bf-sea); }
+/* Results grid */
+.fallback { margin-bottom: 72px; }
+.results__head {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 40px;
+  padding-bottom: 28px; margin-bottom: 56px; border-bottom: 1px solid var(--bf-hairline);
+}
+.results__eyebrow { margin-bottom: 12px; color: var(--bf-stone); }
+.results__title { margin: 0; font-family: var(--bf-display); font-weight: 300; font-size: 48px; line-height: 1; }
+.results__filters { display: flex; flex-wrap: wrap; gap: 12px 40px; }
+.results__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 72px 40px;
+}
+@media (max-width: 1100px) { .results__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .results__grid { grid-template-columns: 1fr; gap: 56px; } }
+
+/* Map */
+.map { height: 560px; border-radius: var(--bf-radius); background: var(--bf-photo); z-index: 0; }
+.map .leaflet-tile-pane { filter: grayscale(1) sepia(0.18) brightness(1.06) contrast(0.82); }
+.map .leaflet-popup-content-wrapper,
+.map .leaflet-popup-tip { border-radius: var(--bf-radius); background: var(--bf-paper); box-shadow: var(--bf-shadow); }
+.map .leaflet-popup-content { margin: 14px 18px; font: 14px/1.5 var(--bf-font); color: var(--bf-ink); }
+.map .leaflet-popup-content strong { font-family: var(--bf-display); font-weight: 400; font-size: 20px; }
+.map .leaflet-control-zoom a { border-radius: 0 !important; color: var(--bf-ink); }
+.map .leaflet-control-attribution { background: rgba(251, 249, 245, 0.85); color: var(--bf-stone); }
+
+/* Footer */
+.footer {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px;
+  padding: 48px 64px; border-top: 1px solid var(--bf-hairline); font-size: 13px; color: var(--bf-stone);
+}
+.footer__logo { font-family: var(--bf-display); font-size: 22px; color: var(--bf-ink); }
+
+@media (max-width: 760px) {
+  .status-row, .footer { padding-left: 20px; padding-right: 20px; }
+  .section { padding: 56px 20px 88px; }
+  .results__title { font-size: 40px; }
+  .map { height: 400px; }
+}

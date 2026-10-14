@@ -1,15 +1,19 @@
 import { PickBanner } from "@beach-finder/ui";
 
-const venice = {
-  name: "Venice Beach", region: "Los Angeles, CA, USA", distance: 22, score: 89,
-  popularity: 92, cool: 9, vibes: ["party", "people-watching", "skate"],
-  blurb: "Boardwalk chaos, Muscle Beach, street performers and a skate park.",
+const kynance = {
+  name: "Kynance Cove", region: "Lizard Peninsula", distance: 42, score: 92, popularity: 64, cool: 7, chairRental: true,
+  vibes: ["swimming", "scenic"],
+  blurb: "Turquoise water between serpentine stacks. Best at low tide, when the sand bars join the islands.",
 };
-const cannon = {
-  name: "Cannon Beach", region: "Oregon, USA", distance: 1240, score: 71,
-  popularity: 75, cool: 9, vibes: ["scenic", "family"], blurb: "Haystack Rock and moody Pacific Northwest vibes.",
+const pedn = {
+  name: "Pedn Vounder", region: "Treen", distance: 61, score: 79, popularity: 40, cool: 9, chairRental: false,
+  vibes: ["scenic", "remote"], blurb: "A tidal sandbar reached by a steep cliff path.",
 };
 
-export const TodaysPick = () => <PickBanner beach={venice} directionsHref="#" />;
+export const TodaysPick = () => <PickBanner beach={kynance} directionsHref="#" onViewMap={() => {}} />;
 
-export const ClosestFallback = () => <PickBanner beach={cannon} label="Closest great beach" directionsHref="#" />;
+export const Feature = () => (
+  <PickBanner layout="feature" beach={kynance} directionsHref="#" onViewMap={() => {}} style={{ maxWidth: 1312 }} />
+);
+
+export const ClosestFallback = () => <PickBanner beach={pedn} label="Closest great beach" directionsHref="#" />;

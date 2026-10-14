@@ -1,29 +1,34 @@
 import { BeachCard } from "@beach-finder/ui";
 
-const malibu = {
-  name: "Malibu Surfrider Beach", region: "Malibu, CA, USA", distance: 41, score: 84,
-  popularity: 80, cool: 9, vibes: ["surf", "chill"], blurb: "Legendary point break with mellow, long rides.",
+const porthcurno = {
+  name: "Porthcurno", region: "West Penwith", distance: 58, score: 88, popularity: 76, cool: 6, chairRental: true,
+  vibes: ["swimming", "chill"], blurb: "Fine shell sand below the cliffs, sheltered from the westerly wind.",
 };
-const laJolla = {
-  name: "La Jolla Cove", region: "San Diego, CA, USA", distance: 6.4, score: 91,
-  popularity: 85, cool: 9, vibes: ["snorkel", "scenic", "wildlife"], blurb: "Sea lions, kayaking and crystal-clear snorkeling.",
+const fistral = {
+  name: "Fistral", region: "Newquay", distance: 31, score: 84, popularity: 90, cool: 5, chairRental: true,
+  vibes: ["surf", "lively"], blurb: "Consistent Atlantic swell along a long, open shore.",
+};
+const gwithian = {
+  name: "Gwithian Towans", region: "St Ives Bay", distance: 37, score: 81, popularity: 60, cool: 8, chairRental: false,
+  vibes: ["surf", "walks"], blurb: "Three miles of dunes with views across to the lighthouse.",
 };
 
 export const Default = () => (
-  <div style={{ maxWidth: 480 }}>
-    <BeachCard beach={malibu} directionsHref="https://www.google.com/maps/dir/?api=1&destination=34.0353,-118.6776" />
+  <div style={{ maxWidth: 380 }}>
+    <BeachCard beach={porthcurno} rank={2} />
   </div>
 );
 
-export const WithoutDirections = () => (
-  <div style={{ maxWidth: 480 }}>
-    <BeachCard beach={laJolla} />
+export const WithDirections = () => (
+  <div style={{ maxWidth: 380 }}>
+    <BeachCard beach={fistral} rank={3} directionsHref="https://www.google.com/maps/dir/?api=1&destination=50.4153,-5.1003" />
   </div>
 );
 
-export const ResultsList = () => (
-  <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12, maxWidth: 480 }}>
-    <BeachCard as="li" beach={laJolla} directionsHref="#" onClick={() => {}} />
-    <BeachCard as="li" beach={malibu} directionsHref="#" onClick={() => {}} />
+export const ResultsGrid = () => (
+  <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "72px 40px", maxWidth: 1100 }}>
+    <BeachCard as="li" rank={2} beach={porthcurno} onClick={() => {}} />
+    <BeachCard as="li" rank={3} beach={fistral} onClick={() => {}} />
+    <BeachCard as="li" rank={4} beach={gwithian} onClick={() => {}} />
   </ol>
 );

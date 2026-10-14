@@ -7,21 +7,27 @@ export interface SelectOption {
 }
 
 export interface SelectFieldProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "children"> {
-  /** Visible label rendered before the select, e.g. "Within" or "Sort by". */
+  /** Visible label, e.g. "Within" or "Sort". */
   label: string;
   options: SelectOption[];
+  /** `stacked` (default): uppercase label above a ruled field. `inline`: "Sort: Best match ⌄" in running text. */
+  variant?: "stacked" | "inline";
 }
 
-/** Inline labelled dropdown used for compact filters ("Within 150 km", "Vibe: Surf"). */
-export function SelectField({ label, options, className, ...rest }: SelectFieldProps) {
+/** Labelled native dropdown with a stone "⌄" caret. */
+export function SelectField({ label, options, variant = "stacked", className, ...rest }: SelectFieldProps) {
+  const inline = variant === "inline";
   return (
-    <label className={cx("bf-select-field", className)}>
-      {label}
-      <select {...rest}>
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
-        ))}
-      </select>
+    <label className={cx("bf-field", inline && "bf-field--inline", className)}>
+      <span className={cx("bf-field__label", !inline && "bf-label")}>{inline ? `${label}:` : label}</span>
+      <span className="bf-field__control">
+        <select {...rest}>
+          {options.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+        <span className="bf-caret" aria-hidden="true">⌄</span>
+      </span>
     </label>
   );
 }

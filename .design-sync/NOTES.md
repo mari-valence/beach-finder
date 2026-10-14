@@ -5,7 +5,8 @@
 - Node: none was installed system-wide on this Mac; the first sync used a local Node 22 at `~/.local/node/bin` (prepend to PATH).
 - Render check / capture: no Playwright browser cache. `playwright` is installed in `.ds-sync` with `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` and pointed at system Chrome: `DS_CHROMIUM_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"`. Run scripts with `NODE_PATH=$PWD/.ds-sync/node_modules` so they resolve it.
 - `BeachRoot` is the provider (`cfg.provider`) and excluded as a component; `BeachCardBody` is an internal building block, excluded via `componentSrcMap`.
-- Auto `.d.ts` extraction drops inherited DOM props (onClick, disabled, value, onChange, placeholder…) and leaves `Beach`/`SelectOption` as unresolved names, so Button, TextInput, SelectField, Card, BeachCard, PickBanner use hand-written `dtsPropsFor`.
+- Auto `.d.ts` extraction drops inherited DOM props (onClick, disabled, value, onChange, placeholder…) and leaves `Beach`/`SelectOption` as unresolved names, so every component except BeachRoot uses hand-written `dtsPropsFor`.
+- 2026-10-14: restyled to the editorial direction (ivory/ink/rosewood, Cormorant Garamond + Hanken Grotesk loaded via `@import` at the top of `styles.css`). New props: Button `variant="text"` + `href`, TextInput `label`, SelectField `variant`, Pill `selected`, BeachCard `rank`, PickBanner `layout`/`onViewMap`, EmptyState `title`/`action`, Hero `eyebrow`/`image`/`nav`/`logo` (Hero `tagline` removed). `Beach` gained `chairRental` and optional `image`.
 - Groups come from `category` frontmatter in `packages/ui/docs/<Name>.md` (auto-detected docsDir). `guidelinesGlob` is pointed at a non-existent `guides/` on purpose: the default `docs/*.md` would duplicate the component docs into `guidelines/` (the build logs a harmless `! guidelinesGlob: guides not found`).
 - DesignSync auth: `/design-login` isn't available in the desktop app's Code tab. Run it once from the `claude` CLI in a terminal (installed via the local Node: `npm i -g @anthropic-ai/claude-code`); the desktop session then reuses it.
 - Project: "Beach Finder UI" — https://claude.ai/design/p/8c364bf3-c1e2-4589-abc5-9faa20d29daf (pinned in config.json). First upload 2026-10-14: 51 files + anchor, no deletes.
@@ -14,6 +15,7 @@
 - none
 
 ## Re-sync risks
-- `dtsPropsFor` is hand-maintained: any prop added to Button/TextInput/SelectField/Card/BeachCard/PickBanner (or a change to the `Beach` shape) must be mirrored in `.design-sync/config.json`, or the design agent won't see it.
+- `dtsPropsFor` is hand-maintained: any prop added to a component (or a change to the `Beach` shape) must be mirrored in `.design-sync/config.json`, or the design agent won't see it.
 - Previews' sample beach data is inlined in `.design-sync/previews/*.tsx`, not imported from `src/beaches.js`; it won't track data edits (fine — it's illustrative).
+- The webfonts come from Google Fonts at runtime; a capture without network falls back to Georgia/Helvetica.
 - Render verification used system Chrome, not a pinned Playwright Chromium; a Chrome update could shift screenshots slightly.

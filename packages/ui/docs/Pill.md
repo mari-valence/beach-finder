@@ -3,8 +3,8 @@ category: Display
 ---
 # Pill
 
-Small rounded tag in sea tint with dark-sea text. Use for beach vibes and other short lowercase labels ("surf", "snorkel", "family"). Group pills in a flex row with a 6px gap.
+Small square-cornered tag: 11px uppercase, .16em tracking, 6×12px padding, 1px `--bf-pill-border` border, 2px radius. Set `selected` for the filled ink state, e.g. an active vibe filter. Group pills in a flex row with an 8px gap.
 
 ```jsx
-<Pill>surf</Pill> <Pill>chill</Pill>
+<Pill>Surf</Pill> <Pill>Chill</Pill> <Pill selected>Swimming</Pill>
 ```

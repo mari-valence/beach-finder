@@ -1,7 +1,13 @@
-import { EmptyState } from "@beach-finder/ui";
+import { EmptyState, Button } from "@beach-finder/ui";
 
-export const NoNearbyBeaches = () => (
-  <EmptyState>No beaches in our list within that distance. Here are the closest ones instead.</EmptyState>
+export const NoMatches = () => (
+  <EmptyState title="No beaches match." action={<Button variant="text">Reset filters</Button>}>
+    Try widening the distance or choosing a different vibe.
+  </EmptyState>
 );
 
-export const NoSearchYet = () => <EmptyState>Search for a city to see beaches near you.</EmptyState>;
+export const NoSearchYet = () => (
+  <EmptyState title="Start with a place." action={<Button variant="text">Use my location</Button>}>
+    Type a town or address above and we'll rank the beaches within reach.
+  </EmptyState>
+);
